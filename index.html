@@ -12,18 +12,23 @@ document.getElementById("main").classList.remove("hidden");
 type();
 }else{
 attempts++;
-e.innerText=attempts==1?"Hmm… not quite 💭":"Try again… you know this 😭";
+
+if(attempts==1){
+e.innerText="Hmm… not quite 💭";
+}else{
+e.innerText="143+myy nicknamee youuu buddhuuuu teddyy bearr 🧸💖";
+}
 }
 }
 
-// STORY
+// STORY (SOFTER)
 let lines=[
 "Hey… 💌",
-"I’m really glad you came here.",
+"I didn’t expect you to open this…",
+"but I’m really glad you did.",
 "Some people don’t leave you…",
-"Even when they’re gone.",
-"You stayed with me.",
-"And maybe… I stayed with you too.",
+"even when they’re not around.",
+"You’re kind of like that for me.",
 "So tell me honestly…"
 ];
 
@@ -49,10 +54,12 @@ function next(){
 i++;
 document.getElementById("nextBtn").classList.add("hidden");
 
-if(i<lines.length){type();}
-else{
+if(i<lines.length){
+type();
+}else{
 document.getElementById("main").classList.add("hidden");
 document.getElementById("quiz").classList.remove("hidden");
+setupNoBtn();
 }
 }
 
@@ -66,9 +73,6 @@ noBtn.style.transform=`translate(${Math.random()*200}px,${Math.random()*200}px)`
 };
 }
 }
-
-// call it after quiz shows
-setTimeout(setupNoBtn,100);
 
 // GAME
 let heart=document.getElementById("heart");
@@ -97,79 +101,30 @@ document.getElementById("game").classList.add("hidden");
 document.getElementById("final").classList.remove("hidden");
 
 let msg="";
-if(clicks>15) msg="You stayed… just like I hoped 💖";
-else if(clicks>7) msg="You tried… I saw that 🌫️";
-else msg="You let go… but I didn’t 💔";
+if(clicks>15) msg="You stayed… that made me smile 💖";
+else if(clicks>7) msg="You tried… and that means a lot 🌸";
+else msg="Even if you didn’t… I still like you a little 🫠";
 
 document.getElementById("finalText").innerHTML=
 msg+"<br><br>You still matter to me 🫶🏻";
 
-enableSecret(); // 🔥 IMPORTANT
+enableSecret();
 }
 
-// LETTER
+// LETTER → NOW LEADS TO LYRICS
 function openLetter(){
 document.getElementById("final").classList.add("hidden");
 document.getElementById("letter").classList.remove("hidden");
-}
-
-// ✨ SECRET (ONLY FINAL SCREEN CLICK)
-let secretShown=false;
-
-function enableSecret(){
-let finalCard=document.querySelector("#final .card");
-
-if(finalCard){
-finalCard.addEventListener("click",()=>{
-if(!secretShown){
-secretShown=true;
-
-let msg=document.createElement("div");
-msg.innerText="I missed you more than I ever said 💌";
-
-msg.style.position="fixed";
-msg.style.bottom="30px";
-msg.style.left="50%";
-msg.style.transform="translateX(-50%)";
-msg.style.background="rgba(0,0,0,0.6)";
-msg.style.padding="10px 20px";
-msg.style.borderRadius="10px";
-msg.style.opacity="0";
-msg.style.transition="opacity 1s";
-
-document.body.appendChild(msg);
-
-setTimeout(()=>msg.style.opacity="1",100);
 
 setTimeout(()=>{
-msg.style.opacity="0";
-setTimeout(()=>msg.remove(),1000);
-},3000);
-}
-});
-}
+showLyrics();
+},5000);
 }
 
-// FLOATING PARTICLES
-let emojis=["💖","🧸","🌸","✨","💗","🎀"];
-
-for(let i=0;i<40;i++){
-let p=document.createElement("div");
-p.className="particle";
-p.innerText=emojis[Math.floor(Math.random()*emojis.length)];
-p.style.left=Math.random()*100+"vw";
-p.style.fontSize=(Math.random()*10+12)+"px";
-p.style.animationDuration=(Math.random()*12+8)+"s";
-document.body.appendChild(p);
-}
-
-// RAIN
-for(let i=0;i<80;i++){
-let r=document.createElement("div");
-r.className="rain";
-r.style.left=Math.random()*100+"vw";
-r.style.animationDuration=(Math.random()*1+0.5)+"s";
-document.body.appendChild(r);
-}
-
-</script>
+// 🎧 LYRICS (I WANNA BE YOURS)
+let lyrics=[
+"I wanna be your vacuum cleaner…",
+"Breathing in your dust 💖",
+"I wanna be your Ford Cortina…",
+"I will never rust",
+"If you like your coffee hot
