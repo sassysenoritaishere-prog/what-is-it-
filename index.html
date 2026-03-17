@@ -1,154 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>For You 💌</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Poppins&display=swap" rel="stylesheet">
-
-<style>
-body{
-margin:0;
-overflow:hidden;
-font-family:'Poppins',sans-serif;
-color:white;
-
-background: linear-gradient(-45deg, #2b1055, #7597de, #ff9a9e, #fad0c4);
-background-size: 400% 400%;
-animation: bg 12s ease infinite;
-}
-
-@keyframes bg{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
-
-.container{
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.card{
-background: rgba(255,192,203,0.1);
-backdrop-filter: blur(20px);
-padding:30px;
-border-radius:20px;
-width:90%;
-max-width:600px;
-text-align:center;
-box-shadow:0 0 60px rgba(255,182,193,0.3);
-}
-
-button,input{
-margin-top:10px;
-padding:10px;
-border:none;
-border-radius:8px;
-}
-
-button{
-background:white;
-color:black;
-cursor:pointer;
-}
-
-.hidden{display:none;}
-
-#heart{
-position:absolute;
-font-size:60px;
-cursor:pointer;
-}
-
-.particle{
-position:fixed;
-animation: float linear infinite;
-opacity:0.8;
-filter: drop-shadow(0 0 6px rgba(255,182,193,0.8));
-}
-
-@keyframes float{
-from{transform:translateY(100vh);}
-to{transform:translateY(-10vh);}
-}
-
-.rain{
-position:fixed;
-width:2px;
-height:15px;
-background:rgba(255,182,193,0.3);
-animation:rainFall linear infinite;
-}
-
-@keyframes rainFall{
-to{transform:translateY(100vh);}
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- LOCK -->
-<div id="lock" class="container">
-<div class="card">
-<h2>🔐 This isn’t for everyone</h2>
-<p>143+myy nicknamee youuu buddhuuuu teddyy bearr 🧸💖</p>
-<input type="password" id="pass">
-<br>
-<button onclick="check()">Enter</button>
-<p id="error"></p>
-</div>
-</div>
-
-<!-- MAIN -->
-<div id="main" class="container hidden">
-<div class="card">
-<p id="text"></p>
-<button id="nextBtn" class="hidden" onclick="next()">Continue 💌</button>
-</div>
-</div>
-
-<!-- QUIZ -->
-<div id="quiz" class="container hidden">
-<div class="card">
-<p>Do you miss me? 🫠</p>
-<button onclick="startGame()">Yes 💖</button>
-<button onclick="startGame()">Sometimes 🌫️</button>
-<button id="noBtn">No ❌</button>
-</div>
-</div>
-
-<!-- GAME -->
-<div id="game" class="hidden">
-<div id="heart">💖</div>
-</div>
-
-<!-- FINAL -->
-<div id="final" class="container hidden">
-<div class="card">
-<p id="finalText"></p>
-<button onclick="openLetter()">Read something 💌</button>
-</div>
-</div>
-
-<!-- LETTER -->
-<div id="letter" class="container hidden">
-<div class="card">
-<h2>💌 A letter I never sent</h2>
-<p>
-I don’t know if you’ll ever fully understand this…<br><br>
-But you mattered to me in ways I never said out loud.<br>
-Not loudly. Not dramatically.<br><br>
-Just quietly… constantly.<br><br>
-And maybe… you still do.
-</p>
-</div>
-</div>
-
 <script>
 
 // PASSWORD
@@ -207,11 +56,19 @@ document.getElementById("quiz").classList.remove("hidden");
 }
 }
 
-// NO BUTTON ESCAPE
+// NO BUTTON (SAFE)
+function setupNoBtn(){
 let noBtn=document.getElementById("noBtn");
+
+if(noBtn){
 noBtn.onmouseover=()=>{
 noBtn.style.transform=`translate(${Math.random()*200}px,${Math.random()*200}px)`;
 };
+}
+}
+
+// call it after quiz shows
+setTimeout(setupNoBtn,100);
 
 // GAME
 let heart=document.getElementById("heart");
@@ -246,12 +103,51 @@ else msg="You let go… but I didn’t 💔";
 
 document.getElementById("finalText").innerHTML=
 msg+"<br><br>You still matter to me 🫶🏻";
+
+enableSecret(); // 🔥 IMPORTANT
 }
 
 // LETTER
 function openLetter(){
 document.getElementById("final").classList.add("hidden");
 document.getElementById("letter").classList.remove("hidden");
+}
+
+// ✨ SECRET (ONLY FINAL SCREEN CLICK)
+let secretShown=false;
+
+function enableSecret(){
+let finalCard=document.querySelector("#final .card");
+
+if(finalCard){
+finalCard.addEventListener("click",()=>{
+if(!secretShown){
+secretShown=true;
+
+let msg=document.createElement("div");
+msg.innerText="I missed you more than I ever said 💌";
+
+msg.style.position="fixed";
+msg.style.bottom="30px";
+msg.style.left="50%";
+msg.style.transform="translateX(-50%)";
+msg.style.background="rgba(0,0,0,0.6)";
+msg.style.padding="10px 20px";
+msg.style.borderRadius="10px";
+msg.style.opacity="0";
+msg.style.transition="opacity 1s";
+
+document.body.appendChild(msg);
+
+setTimeout(()=>msg.style.opacity="1",100);
+
+setTimeout(()=>{
+msg.style.opacity="0";
+setTimeout(()=>msg.remove(),1000);
+},3000);
+}
+});
+}
 }
 
 // FLOATING PARTICLES
@@ -276,37 +172,4 @@ r.style.animationDuration=(Math.random()*1+0.5)+"s";
 document.body.appendChild(r);
 }
 
-// SECRET (ONLY ONCE)
-let secretShown=false;
-
-document.body.onclick=()=>{
-if(!secretShown && !document.getElementById("final").classList.contains("hidden")){
-secretShown=true;
-
-let msg=document.createElement("div");
-msg.innerText="I missed you more than I ever said 💌";
-msg.style.position="fixed";
-msg.style.bottom="30px";
-msg.style.left="50%";
-msg.style.transform="translateX(-50%)";
-msg.style.background="rgba(0,0,0,0.6)";
-msg.style.padding="10px 20px";
-msg.style.borderRadius="10px";
-msg.style.opacity="0";
-msg.style.transition="opacity 1s";
-
-document.body.appendChild(msg);
-
-setTimeout(()=>msg.style.opacity="1",100);
-
-setTimeout(()=>{
-msg.style.opacity="0";
-setTimeout(()=>msg.remove(),1000);
-},3000);
-}
-};
-
 </script>
-
-</body>
-</html>
