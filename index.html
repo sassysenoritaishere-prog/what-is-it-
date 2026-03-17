@@ -1,293 +1,195 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Baby 💖</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<title>For You</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  font-family:'Poppins',sans-serif;
-  background:black;
-  color:white;
-  overflow-x:hidden;
+body {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  background: black;
+  color: #e5e5e5;
+  text-align: center;
+  overflow: hidden;
 }
 
-canvas{
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:-3;
+.container {
+  padding: 100px 20px;
 }
 
-#moon{
-  position:fixed;
-  top:80px;
-  right:120px;
-  width:140px;
-  height:140px;
-  border-radius:50%;
-  background:radial-gradient(circle at 30% 30%, #fff 40%, #ddd 70%, #aaa);
-  box-shadow:0 0 80px rgba(255,255,255,0.6);
-  animation:moonPulse 6s infinite ease-in-out;
-  z-index:-2;
+.hidden {
+  display: none;
 }
 
-@keyframes moonPulse{
-  0%,100%{box-shadow:0 0 60px rgba(255,255,255,0.5);}
-  50%{box-shadow:0 0 100px rgba(255,255,255,0.9);}
+input {
+  padding: 10px;
+  background: transparent;
+  border: 1px solid white;
+  color: white;
 }
 
-#loading{
-  position:fixed;
-  width:100%;
-  height:100vh;
-  background:black;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:1.4rem;
-  z-index:9999;
+button {
+  padding: 10px 20px;
+  margin-top: 15px;
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  cursor: pointer;
 }
 
-#passwordSection{
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
+button:hover {
+  background: white;
+  color: black;
 }
 
-input{
-  padding:12px 20px;
-  border-radius:30px;
-  border:none;
-  margin-top:15px;
-  text-align:center;
+.option {
+  border: 1px solid white;
+  padding: 10px;
+  margin: 10px auto;
+  width: 200px;
+  cursor: pointer;
+  position: relative;
 }
 
-button{
-  padding:10px 25px;
-  margin-top:15px;
-  border-radius:25px;
-  border:none;
-  background:hotpink;
-  color:white;
-  cursor:pointer;
-  transition:0.3s;
-}
-button:hover{transform:scale(1.1);}
-
-#error{margin-top:10px;color:pink;}
-
-#main{
-  display:none;
-  padding:80px 20px;
-  text-align:center;
-  animation:fadeIn 1s ease forwards;
+.option:hover {
+  background: white;
+  color: black;
 }
 
-@keyframes fadeIn{
-  from{opacity:0;}
-  to{opacity:1;}
+#noBtn {
+  position: absolute;
 }
 
-h1{
-  font-size:3rem;
-  text-shadow:0 0 25px hotpink,0 0 50px deeppink;
-  margin-bottom:40px;
+#heart {
+  font-size: 50px;
+  position: absolute;
+  cursor: pointer;
 }
 
-.glass{
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(15px);
-  padding:40px;
-  border-radius:25px;
-  max-width:800px;
-  margin:0 auto;
-  box-shadow:0 0 50px rgba(255,255,255,0.2);
-  line-height:1.8;
-  font-size:1.1rem;
-}
-
-#playlistLabel{
-  margin-top:30px;
-  font-size:1.2rem;
-  color:pink;
-}
-
-iframe{
-  margin-top:10px;
-  border-radius:20px;
-}
-
-#countdown{
-  margin-top:25px;
-  font-size:1.1rem;
-  opacity:0.8;
-}
-
-.plush{
-  position:absolute;
-  width:140px;
-  animation:float 6s infinite ease-in-out;
-  opacity:0.6;
-}
-
-#panda{left:10%;top:50%;}
-#teddy{right:10%;top:60%;}
-
-@keyframes float{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-20px);}
-}
-
-#secretBtn{
-  margin-top:40px;
-  background:purple;
-}
-
-#secretText{
-  display:none;
-  margin-top:30px;
-  font-size:1.5rem;
-  text-shadow:0 0 20px gold;
-}
-
-@media(max-width:768px){
-  h1{font-size:2rem;}
-  .plush{display:none;}
-}
 </style>
 </head>
 
 <body>
 
-<div id="loading">Loading my heart...</div>
-<canvas id="starfield"></canvas>
-<div id="moon"></div>
+<!-- 🔐 LOCK SCREEN -->
+<div id="lockScreen" class="container">
+  <h1>This isn’t for everyone.</h1>
+  <p>Something you used to call me.</p>
 
-<section id="passwordSection">
-  <h1>Enter Our Anniversary 💖</h1>
-  <input type="password" id="pass">
-  <button onclick="unlock()">Unlock</button>
-  <div id="error"></div>
-</section>
+  <input type="password" id="password" placeholder="Enter password">
+  <br>
+  <button onclick="checkPassword()">Enter</button>
 
-<section id="main">
-  <h1>Hieee meraaaa babyyyyy</h1>
+  <p id="error"></p>
+</div>
 
-  <img id="panda" class="plush" src="panda.png">
-<img id="teddy" class="plush" src="teddy.png">
+<!-- 💖 MAIN -->
+<div id="mainContent" class="hidden">
 
-  <div class="glass" id="letter"></div>
-
-  <div id="playlistLabel">Read in order 💌</div>
-
-  <iframe src="https://open.spotify.com/embed/playlist/3xcwB8jqLXvsboSSDBHQHD"
-    width="100%" height="380" allow="autoplay; clipboard-write; encrypted-media;">
-  </iframe>
-
-  <div id="countdown"></div>
-
-  <button id="secretBtn" onclick="secret()">Click to open my heart 💖</button>
-  <div id="secretText">
-    Youuuu areeeee mineeee, for thiss lifetime and for every million you're born at.
+  <!-- 🌙 INTRO -->
+  <div class="container" id="intro">
+    <h1>Hey…</h1>
+    <p>I don’t know why you’re here.<br>But I’m glad you are.</p>
+    <button onclick="next('intro','memory')">Stay a little?</button>
   </div>
-</section>
 
-<audio id="piano" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6f4b9a3a3a.mp3?filename=soft-piano-ambient-110397.mp3">
-</audio>
+  <!-- 💭 MEMORY -->
+  <div class="container hidden" id="memory">
+    <p>I still remember your laugh…</p>
+    <p>You made ordinary days feel special.</p>
+    <p>And somehow… you still do.</p>
+    <button onclick="next('memory','quiz')">Can I ask you something?</button>
+  </div>
 
-<audio id="magic">
-  <source src="https://cdn.pixabay.com/download/audio/2022/08/04/audio_5bde1b0d1a.mp3?filename=magic-ambience-114118.mp3">
-</audio>
+  <!-- 💌 QUIZ -->
+  <div class="container hidden" id="quiz">
+    <p>Do you miss me?</p>
+
+    <div class="option" onclick="next('quiz','game')">Yes</div>
+    <div class="option" onclick="next('quiz','game')">Sometimes</div>
+    <div class="option" id="noBtn">No</div>
+  </div>
+
+  <!-- 🎮 GAME -->
+  <div class="container hidden" id="game">
+    <p>Don’t let me go…</p>
+    <div id="heart">💖</div>
+  </div>
+
+  <!-- 💗 FINAL -->
+  <div class="container hidden" id="final">
+    <p>
+      Even when you let go…<br>
+      I didn’t.
+    </p>
+    <p>You still matter to me.</p>
+  </div>
+
+</div>
 
 <script>
-window.onload=function(){
-  setTimeout(()=>document.getElementById("loading").style.display="none",2000);
-};
+let attempts = 0;
 
-function unlock(){
-  if(document.getElementById("pass").value.trim()==="120125"){
-    document.getElementById("passwordSection").style.display="none";
-    document.getElementById("main").style.display="block";
-    document.getElementById("piano").play();
-    animateLetter();
-  }else{
-    document.getElementById("error").innerHTML="How can you forget this date? 🥺";
-  }
-}
+function checkPassword() {
+  let pass = document.getElementById("password").value;
+  let error = document.getElementById("error");
 
-/* Word by word letter */
-const text=`I ammmmmm sooooo sorrrry meraaa babyyyyy.
-Youuuu areeee myyyyy pyaaaruuuuu saaaaa bachaaaaaa my tedddyy bearuu.
-I lovee you more than the stars above us, more than the galaxies we look at, more than every celestial dust we've crossed paths with.
-Youuu live in my thoughtsss everyy single day every single moment.
-tummmm mereeee cutuuuu see baby hooo, my babyy, myy jaanuuu, myy lifee, myyy teddyyy bearrr, meraa all in all sb kuch and I am so so so luckyy to have you.
-I don't even love you. I've become youuu, I choose you.`;
-
-function animateLetter(){
-  const words=text.split(" ");
-  let i=0;
-  function addWord(){
-    if(i<words.length){
-      document.getElementById("letter").innerHTML+=words[i]+" ";
-      i++;
-      setTimeout(addWord,120);
+  if (pass === "iloveyoupanda") {
+    document.getElementById("lockScreen").style.display = "none";
+    document.getElementById("mainContent").classList.remove("hidden");
+  } else {
+    attempts++;
+    if (attempts === 1) {
+      error.innerText = "Hmm… that’s not it.";
+    } else {
+      error.innerText = "Tell him… 143 + my nickname, ughhh.";
     }
   }
-  addWord();
 }
 
-/* Countdown */
-const target=new Date("January 12, 2027 00:00:00").getTime();
-setInterval(()=>{
-  const now=new Date().getTime();
-  const d=target-now;
-  const days=Math.floor(d/(1000*60*60*24));
-  const hours=Math.floor((d%(1000*60*60*24))/(1000*60*60));
-  const minutes=Math.floor((d%(1000*60*60))/(1000*60));
-  const seconds=Math.floor((d%(1000*60))/1000);
-  document.getElementById("countdown").innerHTML=
-  `Next Anniversary in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
-},1000);
+function next(current, next) {
+  document.getElementById(current).classList.add("hidden");
+  document.getElementById(next).classList.remove("hidden");
 
-/* Starfield */
-const canvas=document.getElementById("starfield");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-let stars=[];
-for(let i=0;i<200;i++){
-  stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2});
+  if (next === "game") {
+    startGame();
+  }
 }
-function drawStars(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="white";
-  stars.forEach(s=>{
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fill();
-    s.y+=0.1;
-    if(s.y>canvas.height)s.y=0;
-  });
-  requestAnimationFrame(drawStars);
-}
-drawStars();
 
-/* Secret fireworks */
-function secret(){
-  document.getElementById("secretText").style.display="block";
-  setTimeout(()=>{
-    document.getElementById("magic").play();
-    document.getElementById("piano").volume=0.3;
-  },1500);
+// ❌ Fake NO button
+const noBtn = document.getElementById("noBtn");
+noBtn.onmouseover = function () {
+  noBtn.style.top = Math.random() * window.innerHeight + "px";
+  noBtn.style.left = Math.random() * window.innerWidth + "px";
+};
+
+// 🎮 HEART GAME
+let heart = document.getElementById("heart");
+let gameTime = 0;
+let interval;
+
+function startGame() {
+  heart.style.top = "50%";
+  heart.style.left = "50%";
+
+  interval = setInterval(() => {
+    gameTime++;
+    heart.style.top = Math.random() * 80 + "%";
+    heart.style.left = Math.random() * 80 + "%";
+
+    if (gameTime > 10) {
+      clearInterval(interval);
+      document.getElementById("game").classList.add("hidden");
+      document.getElementById("final").classList.remove("hidden");
+    }
+  }, 800);
 }
+
+heart.onclick = function () {
+  heart.style.transform = "scale(1.2)";
+  setTimeout(() => heart.style.transform = "scale(1)", 100);
+};
 </script>
 
 </body>
