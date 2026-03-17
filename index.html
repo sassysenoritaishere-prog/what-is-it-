@@ -8,34 +8,32 @@
 body {
   margin: 0;
   font-family: 'Georgia', serif;
-  background: black;
-  color: #e5e5e5;
-  text-align: center;
+  color: #fff;
   overflow: hidden;
+  background: linear-gradient(-45deg, #020024, #090979, #000000, #1a1a2e);
+  background-size: 400% 400%;
+  animation: bgMove 12s ease infinite;
+}
+
+@keyframes bgMove {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
 }
 
 .container {
+  text-align: center;
   padding: 100px 20px;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
-input {
+input, button {
   padding: 10px;
+  margin-top: 10px;
   background: transparent;
   border: 1px solid white;
   color: white;
-}
-
-button {
-  padding: 10px 20px;
-  margin-top: 15px;
-  background: transparent;
-  border: 1px solid white;
-  color: white;
-  cursor: pointer;
 }
 
 button:hover {
@@ -47,14 +45,9 @@ button:hover {
   border: 1px solid white;
   padding: 10px;
   margin: 10px auto;
-  width: 200px;
+  width: 220px;
   cursor: pointer;
   position: relative;
-}
-
-.option:hover {
-  background: white;
-  color: black;
 }
 
 #noBtn {
@@ -67,63 +60,52 @@ button:hover {
   cursor: pointer;
 }
 
+#text {
+  font-size: 1.3rem;
+  max-width: 700px;
+  margin: auto;
+  line-height: 1.7;
+}
 </style>
 </head>
 
 <body>
 
-<!-- 🔐 LOCK SCREEN -->
-<div id="lockScreen" class="container">
+<!-- 🔐 LOCK -->
+<div id="lock" class="container">
   <h1>This isn’t for everyone.</h1>
   <p>Something you used to call me.</p>
-
-  <input type="password" id="password" placeholder="Enter password">
+  <input type="password" id="pass">
   <br>
-  <button onclick="checkPassword()">Enter</button>
-
+  <button onclick="check()">Enter</button>
   <p id="error"></p>
 </div>
 
 <!-- 💖 MAIN -->
-<div id="mainContent" class="hidden">
+<div id="main" class="hidden">
 
-  <!-- 🌙 INTRO -->
-  <div class="container" id="intro">
-    <h1>Hey…</h1>
-    <p>I don’t know why you’re here.<br>But I’m glad you are.</p>
-    <button onclick="next('intro','memory')">Stay a little?</button>
+  <div class="container">
+    <p id="text"></p>
+    <button id="nextBtn" class="hidden" onclick="next()">Continue</button>
   </div>
 
-  <!-- 💭 MEMORY -->
-  <div class="container hidden" id="memory">
-    <p>I still remember your laugh…</p>
-    <p>You made ordinary days feel special.</p>
-    <p>And somehow… you still do.</p>
-    <button onclick="next('memory','quiz')">Can I ask you something?</button>
-  </div>
-
-  <!-- 💌 QUIZ -->
-  <div class="container hidden" id="quiz">
+  <!-- QUIZ -->
+  <div id="quiz" class="container hidden">
     <p>Do you miss me?</p>
-
-    <div class="option" onclick="next('quiz','game')">Yes</div>
-    <div class="option" onclick="next('quiz','game')">Sometimes</div>
+    <div class="option" onclick="toGame()">Yes</div>
+    <div class="option" onclick="toGame()">Sometimes</div>
     <div class="option" id="noBtn">No</div>
   </div>
 
-  <!-- 🎮 GAME -->
-  <div class="container hidden" id="game">
+  <!-- GAME -->
+  <div id="game" class="container hidden">
     <p>Don’t let me go…</p>
     <div id="heart">💖</div>
   </div>
 
-  <!-- 💗 FINAL -->
-  <div class="container hidden" id="final">
-    <p>
-      Even when you let go…<br>
-      I didn’t.
-    </p>
-    <p>You still matter to me.</p>
+  <!-- FINAL -->
+  <div id="final" class="container hidden">
+    <p id="finalText"></p>
   </div>
 
 </div>
@@ -131,13 +113,14 @@ button:hover {
 <script>
 let attempts = 0;
 
-function checkPassword() {
-  let pass = document.getElementById("password").value;
+function check() {
+  let p = document.getElementById("pass").value;
   let error = document.getElementById("error");
 
-  if (pass === "iloveyoupanda") {
-    document.getElementById("lockScreen").style.display = "none";
-    document.getElementById("mainContent").classList.remove("hidden");
+  if (p === "iloveyoupanda") {
+    document.getElementById("lock").style.display = "none";
+    document.getElementById("main").classList.remove("hidden");
+    startStory();
   } else {
     attempts++;
     if (attempts === 1) {
@@ -148,47 +131,121 @@ function checkPassword() {
   }
 }
 
-function next(current, next) {
-  document.getElementById(current).classList.add("hidden");
-  document.getElementById(next).classList.remove("hidden");
+// ✍️ STORY TEXT
+let lines = [
+  "Hey…",
+  "I didn’t think you’d actually come here.",
+  "But I’m glad you did.",
+  "It’s weird… how some people stay with you.",
+  "Not in obvious ways…",
+  "But in quiet moments.",
+  "In random thoughts.",
+  "In songs.",
+  "In silence.",
+  "You do that to me.",
+  "And I don’t even know if you realize it.",
+  "So I just wanted to ask you something…"
+];
 
-  if (next === "game") {
-    startGame();
+let index = 0;
+
+function typeLine(text, callback) {
+  let i = 0;
+  let speed = 40;
+  let el = document.getElementById("text");
+  el.innerHTML = "";
+
+  let interval = setInterval(() => {
+    el.innerHTML += text.charAt(i);
+    i++;
+    if (i >= text.length) {
+      clearInterval(interval);
+      document.getElementById("nextBtn").classList.remove("hidden");
+      if (callback) callback();
+    }
+  }, speed);
+}
+
+function startStory() {
+  typeLine(lines[index]);
+}
+
+function next() {
+  index++;
+  document.getElementById("nextBtn").classList.add("hidden");
+
+  if (index < lines.length) {
+    typeLine(lines[index]);
+  } else {
+    document.querySelector(".container").classList.add("hidden");
+    document.getElementById("quiz").classList.remove("hidden");
   }
 }
 
-// ❌ Fake NO button
-const noBtn = document.getElementById("noBtn");
-noBtn.onmouseover = function () {
-  noBtn.style.top = Math.random() * window.innerHeight + "px";
-  noBtn.style.left = Math.random() * window.innerWidth + "px";
+// ❌ NO BUTTON RUNS
+let noBtn = document.getElementById("noBtn");
+noBtn.onmouseover = () => {
+  noBtn.style.top = Math.random()*80+"%";
+  noBtn.style.left = Math.random()*80+"%";
 };
 
-// 🎮 HEART GAME
+// 🎮 GAME
 let heart = document.getElementById("heart");
-let gameTime = 0;
-let interval;
+let clicks = 0;
+let time = 0;
+let gameInterval;
 
-function startGame() {
+function toGame() {
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+
   heart.style.top = "50%";
   heart.style.left = "50%";
 
-  interval = setInterval(() => {
-    gameTime++;
-    heart.style.top = Math.random() * 80 + "%";
-    heart.style.left = Math.random() * 80 + "%";
+  gameInterval = setInterval(() => {
+    time++;
+    heart.style.top = Math.random()*80+"%";
+    heart.style.left = Math.random()*80+"%";
 
-    if (gameTime > 10) {
-      clearInterval(interval);
-      document.getElementById("game").classList.add("hidden");
-      document.getElementById("final").classList.remove("hidden");
+    if (time > 12) {
+      clearInterval(gameInterval);
+      endGame();
     }
-  }, 800);
+  }, 700);
 }
 
-heart.onclick = function () {
+heart.onclick = () => {
+  clicks++;
   heart.style.transform = "scale(1.2)";
-  setTimeout(() => heart.style.transform = "scale(1)", 100);
+  setTimeout(()=>heart.style.transform="scale(1)",100);
+};
+
+function endGame() {
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("final").classList.remove("hidden");
+
+  let msg = "";
+
+  if (clicks > 15) {
+    msg = "You stayed… didn’t you?\nAnd maybe… I never stopped either.";
+  } else {
+    msg = "You let go…\nBut I didn’t.";
+  }
+
+  document.getElementById("finalText").innerText =
+    msg + "\n\nYou still matter to me.\nMore than you probably know.";
+
+  // SECRET
+  setTimeout(() => {
+    document.getElementById("finalText").innerText += "\n\n(click somewhere...)";
+  }, 3000);
+}
+
+// SECRET CLICK
+document.body.onclick = function() {
+  if (document.getElementById("final").style.display !== "none") {
+    alert("I missed you more than I ever said.");
+  }
 };
 </script>
 
