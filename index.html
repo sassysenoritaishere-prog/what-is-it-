@@ -1,51 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You 💌</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+overflow:hidden;
+font-family:'Poppins',sans-serif;
+color:white;
+
+background: linear-gradient(-45deg, #2b1055, #7597de, #ff9a9e, #fad0c4);
+background-size: 400% 400%;
+animation: bg 12s ease infinite;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.container{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.card{
+background: rgba(255,192,203,0.1);
+backdrop-filter: blur(20px);
+padding:30px;
+border-radius:20px;
+width:90%;
+max-width:600px;
+text-align:center;
+}
+
+.hidden{display:none;}
+
+#heart{
+position:absolute;
+font-size:60px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOCK -->
+<div id="lock" class="container">
+<div class="card">
+<h2>🔐 This isn’t for everyone</h2>
+<input type="password" id="pass">
+<br>
+<button onclick="check()">Enter</button>
+<p id="error"></p>
+</div>
+</div>
+
+<!-- MAIN -->
+<div id="main" class="container hidden">
+<div class="card">
+<p id="text"></p>
+<button id="nextBtn" class="hidden" onclick="next()">Continue 💌</button>
+</div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="container hidden">
+<div class="card">
+<p>Do you miss me? 🫠</p>
+<button onclick="startGame()">Yes 💖</button>
+<button onclick="startGame()">Sometimes 🌫️</button>
+<button id="noBtn">No ❌</button>
+</div>
+</div>
+
+<!-- GAME -->
+<div id="game" class="hidden">
+<div id="heart">💖</div>
+</div>
+
+<!-- FINAL -->
+<div id="final" class="container hidden">
+<div class="card">
+<p id="finalText"></p>
+<button onclick="openLetter()">Read something 💌</button>
+</div>
+</div>
+
+<!-- LETTER -->
+<div id="letter" class="container hidden">
+<div class="card">
+<p>
+You mattered to me more than I ever said.<br><br>
+Not loudly… just quietly… always.
+</p>
+</div>
+</div>
+
+<!-- LYRICS -->
+<div id="lyrics" class="container hidden">
+<div class="card">
+<p id="lyricsText"></p>
+</div>
+</div>
+
 <script>
 
-// 🔐 PASSWORD
-let attempts = 0;
-
+// PASSWORD
+let attempts=0;
 function check(){
-let p = document.getElementById("pass").value;
-let e = document.getElementById("error");
+let p=document.getElementById("pass").value;
+let e=document.getElementById("error");
 
-if(p === "iloveyoupanda"){
+if(p==="iloveyoupanda"){
 document.getElementById("lock").classList.add("hidden");
 document.getElementById("main").classList.remove("hidden");
 type();
 }else{
 attempts++;
-
-if(attempts === 1){
-e.innerText = "Hmm… not quite 💭";
-}else{
-e.innerText = "143+myy nicknamee youuu buddhuuuu teddyy bearr 🧸💖";
-}
+e.innerText=attempts==1?"Hmm… not quite 💭":"143+myy nicknamee youuu buddhuuuu teddyy bearr 🧸💖";
 }
 }
 
-// 💖 STORY
-let lines = [
+// STORY
+let lines=[
 "Hey… 💌",
-"I didn’t expect you to open this…",
-"but I’m really glad you did.",
-"Some people don’t leave you…",
-"even when they’re not around.",
-"You’re kind of like that for me.",
+"I’m really glad you came here.",
+"You stayed somewhere in me.",
 "So tell me honestly…"
 ];
 
-let i = 0;
+let i=0;
 
 function type(){
-let t = lines[i];
-let el = document.getElementById("text");
-el.innerHTML = "";
-let j = 0;
+let t=lines[i];
+let el=document.getElementById("text");
+el.innerHTML="";
+let j=0;
 
-let inter = setInterval(()=>{
-el.innerHTML += t[j];
+let inter=setInterval(()=>{
+el.innerHTML+=t[j];
 j++;
-
-if(j >= t.length){
+if(j>=t.length){
 clearInterval(inter);
 document.getElementById("nextBtn").classList.remove("hidden");
 }
@@ -56,73 +160,53 @@ function next(){
 i++;
 document.getElementById("nextBtn").classList.add("hidden");
 
-if(i < lines.length){
-type();
-}else{
+if(i<lines.length){type();}
+else{
 document.getElementById("main").classList.add("hidden");
 document.getElementById("quiz").classList.remove("hidden");
-setupNoBtn();
-}
-}
 
-// ❌ NO BUTTON
-function setupNoBtn(){
-let noBtn = document.getElementById("noBtn");
-
-if(noBtn){
-noBtn.onmouseover = ()=>{
-noBtn.style.transform = `translate(${Math.random()*200}px, ${Math.random()*200}px)`;
+let noBtn=document.getElementById("noBtn");
+noBtn.onmouseover=()=>{
+noBtn.style.transform=`translate(${Math.random()*200}px,${Math.random()*200}px)`;
 };
 }
 }
 
-// 🎮 GAME
-let clicks = 0;
-let time = 0;
-let interval;
+// GAME
+let clicks=0,time=0,interval;
 
 function startGame(){
+clicks=0; time=0;
+
 document.getElementById("quiz").classList.add("hidden");
 document.getElementById("game").classList.remove("hidden");
 
-let heart = document.getElementById("heart");
+let heart=document.getElementById("heart");
 
-interval = setInterval(()=>{
+interval=setInterval(()=>{
 time++;
+heart.style.top=Math.random()*80+"%";
+heart.style.left=Math.random()*80+"%";
 
-heart.style.top = Math.random()*80 + "%";
-heart.style.left = Math.random()*80 + "%";
-
-if(time > 10){
+if(time>10){
 clearInterval(interval);
 end();
 }
 },700);
 
-heart.onclick = ()=>clicks++;
+heart.onclick=()=>clicks++;
 }
 
 function end(){
 document.getElementById("game").classList.add("hidden");
 document.getElementById("final").classList.remove("hidden");
 
-let msg = "";
+let msg=clicks>10?"You stayed… 💖":"You tried… 🌸";
 
-if(clicks > 15){
-msg = "You stayed… that made me smile 💖";
-}else if(clicks > 7){
-msg = "You tried… and that means a lot 🌸";
-}else{
-msg = "Even if you didn’t… I still like you a little 🫠";
+document.getElementById("finalText").innerHTML=msg;
 }
 
-document.getElementById("finalText").innerHTML =
-msg + "<br><br>You still matter to me 🫶🏻";
-
-enableSecret();
-}
-
-// 💌 LETTER → LYRICS
+// LETTER → LYRICS
 function openLetter(){
 document.getElementById("final").classList.add("hidden");
 document.getElementById("letter").classList.remove("hidden");
@@ -131,39 +215,36 @@ setTimeout(()=>{
 document.getElementById("letter").classList.add("hidden");
 document.getElementById("lyrics").classList.remove("hidden");
 typeLyrics();
-},4000);
+},3000);
 }
 
-// 🎧 LYRICS (YOU EDIT THESE)
-let lyrics = [
+// LYRICS (COMPLETE + SAFE)
+let lyrics=[
 "Secrets I have held in my heart💕",
 "Are harder to hide than I thought",
 "Maybe I just wanna be yours🥺",
 "I wanna be yours",
 "I wanna be yours",
-"Wanna be yours",
-"Wanna be yours",
-"Wanna be yours"
+"Wanna be yours 🥺💗"
 ];
 
-// 🎧 TYPE LYRICS
-let lyricIndex = 0;
+let lyricIndex=0;
 
 function typeLyrics(){
-let el = document.getElementById("lyricsText");
+let el=document.getElementById("lyricsText");
 
-if(lyricIndex >= lyrics.length) return;
+if(lyricIndex>=lyrics.length) return;
 
-let text = lyrics[lyricIndex];
-let i = 0;
-el.innerHTML = "";
+let text=lyrics[lyricIndex];
+let i=0;
+el.innerHTML="";
 
-let interval = setInterval(()=>{
-el.innerHTML += text[i];
+let inter=setInterval(()=>{
+el.innerHTML+=text[i];
 i++;
 
-if(i >= text.length){
-clearInterval(interval);
+if(i>=text.length){
+clearInterval(inter);
 
 setTimeout(()=>{
 lyricIndex++;
@@ -173,63 +254,7 @@ typeLyrics();
 },40);
 }
 
-// ✨ SECRET (ONLY FINAL CLICK)
-let secretShown = false;
-
-function enableSecret(){
-let finalCard = document.querySelector("#final .card");
-
-if(finalCard){
-finalCard.addEventListener("click", ()=>{
-if(!secretShown){
-secretShown = true;
-
-let msg = document.createElement("div");
-msg.innerText = "I missed you more than I ever said 💌";
-
-msg.style.position = "fixed";
-msg.style.bottom = "30px";
-msg.style.left = "50%";
-msg.style.transform = "translateX(-50%)";
-msg.style.background = "rgba(0,0,0,0.6)";
-msg.style.padding = "10px 20px";
-msg.style.borderRadius = "10px";
-msg.style.opacity = "0";
-msg.style.transition = "opacity 1s";
-
-document.body.appendChild(msg);
-
-setTimeout(()=>msg.style.opacity="1",100);
-
-setTimeout(()=>{
-msg.style.opacity="0";
-setTimeout(()=>msg.remove(),1000);
-},3000);
-}
-});
-}
-}
-
-// 🌸 PARTICLES
-let emojis=["💖","🧸","🌸","✨","💗","🎀"];
-
-for(let i=0;i<40;i++){
-let p=document.createElement("div");
-p.className="particle";
-p.innerText=emojis[Math.floor(Math.random()*emojis.length)];
-p.style.left=Math.random()*100+"vw";
-p.style.fontSize=(Math.random()*10+12)+"px";
-p.style.animationDuration=(Math.random()*12+8)+"s";
-document.body.appendChild(p);
-}
-
-// 🌧️ RAIN
-for(let i=0;i<80;i++){
-let r=document.createElement("div");
-r.className="rain";
-r.style.left=Math.random()*100+"vw";
-r.style.animationDuration=(Math.random()*1+0.5)+"s";
-document.body.appendChild(r);
-}
-
 </script>
+
+</body>
+</html>
