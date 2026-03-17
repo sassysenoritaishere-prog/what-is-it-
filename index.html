@@ -4,16 +4,17 @@
 <meta charset="UTF-8">
 <title>For You 💌</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
 
 <style>
+
 body{
 margin:0;
 overflow:hidden;
 font-family:'Poppins',sans-serif;
 color:white;
 
-background: linear-gradient(-45deg, #2b1055, #7597de, #ff9a9e, #fad0c4);
+background: linear-gradient(-45deg, #2b1055, #ff9a9e, #fad0c4, #ffc3a0);
 background-size: 400% 400%;
 animation: bg 12s ease infinite;
 }
@@ -32,13 +33,26 @@ height:100vh;
 }
 
 .card{
-background: rgba(255,192,203,0.1);
+background: rgba(255,192,203,0.15);
 backdrop-filter: blur(20px);
 padding:30px;
 border-radius:20px;
 width:90%;
 max-width:600px;
 text-align:center;
+border:1px solid rgba(255,255,255,0.2);
+}
+
+h2{
+font-family:'Pacifico',cursive;
+}
+
+button{
+margin-top:10px;
+padding:10px;
+border:none;
+border-radius:8px;
+cursor:pointer;
 }
 
 .hidden{display:none;}
@@ -48,10 +62,18 @@ position:absolute;
 font-size:60px;
 cursor:pointer;
 }
+
+@keyframes fall{
+to{transform:translateY(110vh);}
+}
+
 </style>
 </head>
 
 <body>
+
+<!-- AUDIO -->
+<audio id="song" src="song.mp3"></audio>
 
 <!-- LOCK -->
 <div id="lock" class="container">
@@ -98,10 +120,7 @@ cursor:pointer;
 <!-- LETTER -->
 <div id="letter" class="container hidden">
 <div class="card">
-<p>
-You mattered to me more than I ever said.<br><br>
-Not loudly… just quietly… always.
-</p>
+<p>Some feelings don’t leave… they just stay quietly 💖</p>
 </div>
 </div>
 
@@ -109,6 +128,13 @@ Not loudly… just quietly… always.
 <div id="lyrics" class="container hidden">
 <div class="card">
 <p id="lyricsText"></p>
+</div>
+</div>
+
+<!-- EXTRA -->
+<div id="extra" class="container hidden">
+<div class="card">
+<p>…you stayed longer than I expected 🫠💖</p>
 </div>
 </div>
 
@@ -141,8 +167,8 @@ let lines=[
 let i=0;
 
 function type(){
-let t=lines[i];
 let el=document.getElementById("text");
+let t=lines[i];
 el.innerHTML="";
 let j=0;
 
@@ -160,8 +186,9 @@ function next(){
 i++;
 document.getElementById("nextBtn").classList.add("hidden");
 
-if(i<lines.length){type();}
-else{
+if(i<lines.length){
+type();
+}else{
 document.getElementById("main").classList.add("hidden");
 document.getElementById("quiz").classList.remove("hidden");
 
@@ -185,6 +212,7 @@ let heart=document.getElementById("heart");
 
 interval=setInterval(()=>{
 time++;
+
 heart.style.top=Math.random()*80+"%";
 heart.style.left=Math.random()*80+"%";
 
@@ -194,9 +222,21 @@ end();
 }
 },700);
 
-heart.onclick=()=>clicks++;
+heart.onclick=()=>{
+clicks++;
+
+// sparkle
+let s=document.createElement("div");
+s.innerText="💗";
+s.style.position="absolute";
+s.style.left=heart.style.left;
+s.style.top=heart.style.top;
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),500);
+};
 }
 
+// FINAL
 function end(){
 document.getElementById("game").classList.add("hidden");
 document.getElementById("final").classList.remove("hidden");
@@ -204,12 +244,18 @@ document.getElementById("final").classList.remove("hidden");
 let msg=clicks>10?"You stayed… 💖":"You tried… 🌸";
 
 document.getElementById("finalText").innerHTML=msg;
+
+enableSecret();
 }
 
-// LETTER → LYRICS
+// LETTER → MUSIC → LYRICS
 function openLetter(){
 document.getElementById("final").classList.add("hidden");
 document.getElementById("letter").classList.remove("hidden");
+
+let song=document.getElementById("song");
+song.currentTime=0;
+song.play();
 
 setTimeout(()=>{
 document.getElementById("letter").classList.add("hidden");
@@ -218,7 +264,7 @@ typeLyrics();
 },3000);
 }
 
-// LYRICS (COMPLETE + SAFE)
+// LYRICS
 let lyrics=[
 "Secrets I have held in my heart💕",
 "Are harder to hide than I thought",
@@ -233,7 +279,13 @@ let lyricIndex=0;
 function typeLyrics(){
 let el=document.getElementById("lyricsText");
 
-if(lyricIndex>=lyrics.length) return;
+if(lyricIndex>=lyrics.length){
+setTimeout(()=>{
+document.getElementById("lyrics").classList.add("hidden");
+document.getElementById("extra").classList.remove("hidden");
+},1500);
+return;
+}
 
 let text=lyrics[lyricIndex];
 let i=0;
@@ -253,6 +305,113 @@ typeLyrics();
 }
 },40);
 }
+
+// SECRET
+let shown=false;
+
+function enableSecret(){
+document.querySelector("#final .card").onclick=()=>{
+if(!shown){
+shown=true;
+
+let msg=document.createElement("div");
+msg.innerText="I missed you more than I ever said 💌";
+msg.style.position="fixed";
+msg.style.bottom="30px";
+msg.style.left="50%";
+msg.style.transform="translateX(-50%)";
+msg.style.background="rgba(0,0,0,0.6)";
+msg.style.padding="10px 20px";
+msg.style.borderRadius="10px";
+
+document.body.appendChild(msg);
+
+setTimeout(()=>msg.remove(),3000);
+}
+};
+}
+
+// PLUSHIE RAIN
+let plush=["🧸","💖","🎀","✨","🌸"];
+
+for(let i=0;i<60;i++){
+let p=document.createElement("div");
+p.innerText=plush[Math.floor(Math.random()*plush.length)];
+
+p.style.position="fixed";
+p.style.left=Math.random()*100+"vw";
+p.style.top="-10px";
+p.style.fontSize=(Math.random()*20+15)+"px";
+p.style.animation=`fall ${Math.random()*5+5}s linear infinite`;
+
+document.body.appendChild(p);
+}
+
+  // ✨ CURSOR TRAIL
+document.addEventListener("mousemove",(e)=>{
+let spark=document.createElement("div");
+spark.innerText="✨";
+spark.style.position="fixed";
+spark.style.left=e.clientX+"px";
+spark.style.top=e.clientY+"px";
+spark.style.pointerEvents="none";
+spark.style.fontSize="10px";
+
+document.body.appendChild(spark);
+
+setTimeout(()=>spark.remove(),500);
+});
+
+
+// 💓 HEARTBEAT BACKGROUND
+setInterval(()=>{
+document.body.style.transform="scale(1.01)";
+setTimeout(()=>{
+document.body.style.transform="scale(1)";
+},200);
+},2000);
+
+
+// 🫣 SECRET ANYWHERE CLICK
+let hiddenCount=0;
+
+document.body.addEventListener("click",()=>{
+hiddenCount++;
+
+if(hiddenCount===7){
+let msg=document.createElement("div");
+msg.innerText="you stayed… didn’t you? 🫠";
+msg.style.position="fixed";
+msg.style.top="40%";
+msg.style.left="50%";
+msg.style.transform="translate(-50%,-50%)";
+msg.style.background="rgba(0,0,0,0.7)";
+msg.style.padding="20px";
+msg.style.borderRadius="15px";
+
+document.body.appendChild(msg);
+
+setTimeout(()=>msg.remove(),3000);
+}
+});
+
+
+// 🌸 FLOATING WHISPERS
+let whispers=["stay…","miss you","still here","you matter"];
+
+setInterval(()=>{
+let w=document.createElement("div");
+w.innerText=whispers[Math.floor(Math.random()*whispers.length)];
+
+w.style.position="fixed";
+w.style.left=Math.random()*100+"vw";
+w.style.top=Math.random()*100+"vh";
+w.style.opacity="0.4";
+
+document.body.appendChild(w);
+
+setTimeout(()=>w.remove(),4000);
+},2000);
 
 </script>
 
