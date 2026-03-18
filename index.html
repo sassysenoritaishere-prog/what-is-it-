@@ -2,19 +2,74 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For You 💌</title>
+<title>StudySpace</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter&family=Pacifico&display=swap" rel="stylesheet">
 
 <style>
+
 body{
 margin:0;
-overflow:hidden;
-font-family:'Poppins',sans-serif;
+font-family:'Inter',sans-serif;
+background:#f5f7fb;
+color:#333;
+}
+
+/* NORMAL UI */
+
+.nav{
+padding:15px 30px;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+display:flex;
+justify-content:space-between;
+}
+
+.container{
+display:flex;
+justify-content:center;
+align-items:center;
+height:90vh;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:12px;
+width:90%;
+max-width:400px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+text-align:center;
+}
+
+input{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:8px;
+border:1px solid #ddd;
+}
+
+button{
+margin-top:10px;
+padding:10px;
+width:100%;
+border:none;
+border-radius:8px;
+background:#4a90e2;
 color:white;
-background: linear-gradient(-45deg, #2b1055, #ff9a9e, #fad0c4, #ffc3a0);
-background-size: 400% 400%;
-animation: bg 12s ease infinite;
+cursor:pointer;
+}
+
+.hidden{display:none;}
+
+/* INSIDE UI (EMOTIONAL MODE) */
+
+.emotional{
+background: linear-gradient(-45deg, #2b1055, #ff9a9e, #fad0c4);
+background-size:400% 400%;
+animation:bg 12s ease infinite;
+color:white;
 }
 
 @keyframes bg{
@@ -23,63 +78,35 @@ animation: bg 12s ease infinite;
 100%{background-position:0% 50%;}
 }
 
-.container{
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.card{
-background: rgba(255,192,203,0.15);
+.emotional .card{
+background: rgba(255,255,255,0.1);
 backdrop-filter: blur(20px);
-padding:30px;
-border-radius:20px;
-width:90%;
-max-width:600px;
-text-align:center;
-border:1px solid rgba(255,255,255,0.2);
+color:white;
 }
-
-h2{
-font-family:'Pacifico',cursive;
-}
-
-button{
-margin-top:10px;
-padding:10px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-.hidden{display:none;}
 
 #heart{
 position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:60px;
+font-size:50px;
 cursor:pointer;
 }
 
-@keyframes fall{
-to{transform:translateY(110vh);}
-}
 </style>
 </head>
 
 <body>
 
-<audio id="song" src="song.mp3"></audio>
+<div class="nav">
+<div>StudySpace</div>
+<div>Dashboard</div>
+</div>
 
-<!-- LOCK -->
+<!-- NORMAL SCREEN -->
 <div id="lock" class="container">
 <div class="card">
-<h2>🔐 This isn’t for everyone</h2>
-<input type="password" id="pass">
-<button onclick="check()">Enter</button>
+<h3>Focus Session Unlock</h3>
+<p>Enter your session key to continue</p>
+<input type="password" id="pass" placeholder="Enter key">
+<button onclick="check()">Unlock</button>
 <p id="error"></p>
 </div>
 </div>
@@ -88,17 +115,17 @@ to{transform:translateY(110vh);}
 <div id="main" class="container hidden">
 <div class="card">
 <p id="text"></p>
-<button id="nextBtn" class="hidden" onclick="next()">Continue 💌</button>
+<button id="nextBtn" class="hidden" onclick="next()">Continue</button>
 </div>
 </div>
 
 <!-- QUIZ -->
 <div id="quiz" class="container hidden">
 <div class="card">
-<p>Do you miss me? 🫠</p>
-<button onclick="startGame()">Yes 💖</button>
-<button onclick="startGame()">Sometimes 🌫️</button>
-<button id="noBtn">No ❌</button>
+<p>Do you miss me?</p>
+<button onclick="startGame()">Yes</button>
+<button onclick="startGame()">Sometimes</button>
+<button id="noBtn">No</button>
 </div>
 </div>
 
@@ -111,98 +138,38 @@ to{transform:translateY(110vh);}
 <div id="final" class="container hidden">
 <div class="card">
 <p id="finalText"></p>
-<button onclick="openLetter()">Read something 💌</button>
+<button onclick="openLetter()">Open Notes</button>
 </div>
 </div>
 
 <!-- LETTER -->
 <div id="letter" class="container hidden">
 <div class="card">
-<p>Some feelings don’t leave… they just stay quietly 💖</p>
-</div>
-</div>
-
-<!-- LYRICS -->
-<div id="lyrics" class="container hidden">
-<div class="card">
-<p id="lyricsText"></p>
-</div>
-</div>
-
-<!-- EXTRA -->
-<div id="extra" class="container hidden">
-<div class="card">
-<p>…you stayed longer than I expected 🫠💖</p>
-</div>
-</div>
-
-<!-- CHOICE -->
-<div id="choice" class="container hidden">
-<div class="card">
-<p>Do you wanna stay a little longer? 🫠</p>
-<button onclick="goMemory()">Stay 💖</button>
-<button onclick="goLeave()">Leave 🌫️</button>
-</div>
-</div>
-
-<!-- MEMORY -->
-<div id="memory" class="container hidden">
-<div class="card">
-<p>
-I remember small things…<br><br>
-the way conversations felt easy,<br>
-the way silence wasn’t awkward,<br><br>
-and somehow… you still feel familiar 💗
-</p>
-<button onclick="finalEnd()">Continue…</button>
-</div>
-</div>
-
-<!-- LEAVE -->
-<div id="leave" class="container hidden">
-<div class="card">
-<p>
-You could leave…<br><br>
-but something tells me<br>
-you won’t 🫠
-</p>
-<button onclick="goMemory()">…stay anyway</button>
-</div>
-</div>
-
-<!-- FINAL END -->
-<div id="endFinal" class="container hidden">
-<div class="card">
-<p>
-Maybe this didn’t change anything…<br><br>
-but I’m glad you stayed till the end 💖
-</p>
+<p id="letterText"></p>
 </div>
 </div>
 
 <script>
 
 // PASSWORD
-let attempts=0;
 function check(){
 let p=document.getElementById("pass").value;
-let e=document.getElementById("error");
 
 if(p==="iloveyoupanda"){
+document.body.classList.add("emotional"); // SWITCH MODE
 document.getElementById("lock").classList.add("hidden");
 document.getElementById("main").classList.remove("hidden");
 type();
 }else{
-attempts++;
-e.innerText=attempts==1?"Hmm… not quite 💭":"143+myy nicknamee youuu buddhuuuu teddyy bearr 🧸💖";
+document.getElementById("error").innerText="Invalid session key";
 }
 }
 
 // STORY
 let lines=[
-"Hey… 💌",
-"I’m really glad you came here.",
-"You stayed somewhere in me.",
+"Hey…",
+"I didn’t know if you’d open this",
+"But I’m glad you did",
 "So tell me honestly…"
 ];
 
@@ -272,109 +239,64 @@ document.getElementById("game").classList.add("hidden");
 document.getElementById("final").classList.remove("hidden");
 
 document.getElementById("finalText").innerHTML=
-(clicks>10?"You stayed… 💖":"You tried… 🌸");
-
-enableSecret();
+(clicks>10?"You stayed…":"You tried…");
 }
 
-// LETTER → LYRICS
+// LETTER (YOUR RAW TEXT)
+let letterLines=[
+"i miss you sm mera babyyy",
+"itttssss sooo sooo sooo hard to live withouttt youuuuu",
+"ek ek ekkkkk second pr tumhara yaad aana toh compulsory haiiii",
+"i loveeeeeeeeee youuuuuuuuuuu soooooo muchhhhhhhhhhhh",
+"",
+"Zyada nai bolna leknnnn you know how much i miss you?",
+"",
+"Tenuuu chadhh ke kitthee jaavaan tuu mera parchavan🥺💗",
+"Tere mukhde vich hi maii taa",
+"Rab nu apne paavan 🫠💘",
+"",
+"Meri duaa haayee",
+"Sajda tera kardi sada🫠",
+"",
+"Tu sunn ikraar meraa🫠🥹",
+"Mai kru intezaar teraaa💕",
+"",
+"Tu dil tuiyyoonn jaan meriii",
+"Mai tainu samjhavan kiii",
+"Naa tere bina lgda jee🥺🥺💗"
+];
+
+let letterIndex=0;
+
 function openLetter(){
 document.getElementById("final").classList.add("hidden");
 document.getElementById("letter").classList.remove("hidden");
 
-let song=document.getElementById("song");
-song.currentTime=0;
-song.play();
-
-setTimeout(()=>{
-document.getElementById("letter").classList.add("hidden");
-document.getElementById("lyrics").classList.remove("hidden");
-typeLyrics();
-},3000);
+showLetter();
 }
 
-// LYRICS
-let lyrics=[
-"Secrets I have held in my heart💕",
-"Are harder to hide than I thought",
-"Maybe I just wanna be yours🥺",
-"I wanna be yours",
-"Wanna be yours 🥺💗"
-];
+function showLetter(){
+let el=document.getElementById("letterText");
 
-let lyricIndex=0;
+if(letterIndex>=letterLines.length) return;
 
-function typeLyrics(){
-let el=document.getElementById("lyricsText");
-
-if(lyricIndex>=lyrics.length){
-setTimeout(()=>{
-document.getElementById("lyrics").classList.add("hidden");
-document.getElementById("extra").classList.remove("hidden");
-
-setTimeout(()=>{
-document.getElementById("extra").classList.add("hidden");
-document.getElementById("choice").classList.remove("hidden");
-},3000);
-
-},1500);
-return;
-}
-
-let text=lyrics[lyricIndex];
+let text=letterLines[letterIndex];
 let i=0;
 el.innerHTML="";
 
 let inter=setInterval(()=>{
-el.innerHTML+=text[i];
+el.innerHTML+=text[i]||"";
 i++;
 
-if(i>=text.length){
+if(i>text.length){
 clearInterval(inter);
+
 setTimeout(()=>{
-lyricIndex++;
-typeLyrics();
-},1200);
+letterIndex++;
+showLetter();
+},1500);
 }
 },40);
-}
-
-// FLOW FUNCTIONS
-function goMemory(){
-document.getElementById("choice").classList.add("hidden");
-document.getElementById("leave").classList.add("hidden");
-document.getElementById("memory").classList.remove("hidden");
-}
-
-function goLeave(){
-document.getElementById("choice").classList.add("hidden");
-document.getElementById("leave").classList.remove("hidden");
-}
-
-function finalEnd(){
-document.getElementById("memory").classList.add("hidden");
-document.getElementById("endFinal").classList.remove("hidden");
-}
-
-// SECRET
-let shown=false;
-function enableSecret(){
-document.querySelector("#final .card").onclick=()=>{
-if(!shown){
-shown=true;
-let msg=document.createElement("div");
-msg.innerText="I missed you more than I ever said 💌";
-msg.style.position="fixed";
-msg.style.bottom="30px";
-msg.style.left="50%";
-msg.style.transform="translateX(-50%)";
-msg.style.background="rgba(0,0,0,0.6)";
-msg.style.padding="10px 20px";
-msg.style.borderRadius="10px";
-document.body.appendChild(msg);
-setTimeout(()=>msg.remove(),3000);
-}
-};
 }
 
 </script>
